@@ -1,0 +1,18 @@
+ap([],L,L).
+ap([X|L1], L2, [X|L3]) :- ap(L1,L2,L3).
+
+apaga(A,[A|B],B).
+apaga(A,[B|C],[B|D]) :- apaga(A,C,D).
+
+maximo(X,[X]).
+maximo(A,[A|B]) :- maximo(A1,B), A>A1.
+maximo(A,[B|C]) :- maximo(A,C), A>=B.
+
+comprimento(0,[]).
+comprimento(X,[_|C]):- comprimento(X1,C), X is X1 + 1.
+
+nesimo(1, [A|_], A).
+nesimo(X, [_|B], Y) :- X > 1, X1 is X - 1, nesimo(X1,B,Y).
+
+total([],0).
+total([A|B],T) :- total(B,T1), T is T1 + A.

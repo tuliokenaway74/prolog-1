@@ -1,58 +1,63 @@
-pai("Rodrigo", "Luiz Felipe").
-pai("Mariano", "Rodrigo").
-pai("Mariano", "Marilene").
-pai("Edelmo", "Micheli").
-pai("Edelmo", "Gisely").
-pai("Edelmo", "Kelly").
-pai("Carlos", "João Carlos").
-pai("Carlos", "Gabriel").
-pai("Giuliano", "Marcia Eduarda").
-pai("Emerson", "Sara").
+pai("Guido Font Galand", "Márcia Bernardes dos Santos").
+pai("Guido Font Galand", "Giovani Oliveira Bernardes").
+pai("Guido Font Galand", "Agmon Oliveira Bernardes").
+pai("Guido Font Galand", "Magda Bernardes Mendes").
+pai("Guido Font Galand", "Gilson de Oliveira Bernardes").
 
-mae("Micheli", "Luiz Felipe").
-mae("Sonia", "Rodrigo").
-mae("Sonia", "Marilene").
-mae("Marcia", "Micheli").
-mae("Marcia", "Gisely").
-mae("Marcia", "Kelly").
-mae("Marilene", "João Carlos").
-mae("Marilene", "Gabriel").
-mae("Gisely", "Marcia Eduarda").
-mae("Gisely", "Yasmin").
-mae("Kelly", "Sara").
+pai("José Edelmo dos Santos", "Michelle Edimarcia dos Santos").
+pai("José Edelmo dos Santos", "Giselly Bernardes dos Santos").
+pai("José Edelmo dos Santos", "Kelly Bernardes dos Santos Souza").
 
-mas(X) :- pai(X,_).
+pai("Agmon Oliveira Bernardes", "Mariah Alves Oliveira Bernardes").
+pai("Agmon Oliveira Bernardes", "Bertrand Alves Oliveira Bernardes").
 
-mas("Luiz Felipe").
-mas("Gabriel").
-mas("João Carlos").
+pai("Marcelo Mendes", "Renan Bernardes Mendes").
+pai("Marcelo Mendes", "Milena Bernardes Mendes").
 
-fem(X) :- mae(X,_).
+pai("Rodrigo Antônio Nogueira", "Luiz Felipe dos Santos Nogueira").
 
-fem("Yasmin").
-fem("Marcia Eduarda").
-fem("Sara").
+pai("Wagner Francisco de Paula", "Yasmin Eduarda Bernardes de Paula").
 
+pai("Giuliano Grande Antunes Luz", "Marcia Eduarda Santos Luz").
 
-avo_paterno(X,Y) :- pai(X,Z), pai(Z,Y).
-avo_materno(X,Y) :- pai(X,Z), mae(Z,Y).
-avoh_paterna(X,Y) :- mae(X,Z), pai(Z,Y).
-avoh_materna(X,Y) :- mae(X,Z), mae(Z,Y).
+pai("Emerson Eugênio de Souza", "Sarah Eugênio Bernardes Santos Souza").
 
-irmao(X,Y) :- pai(Z,Y), pai(Z,X), X \= Y, mas(X).
-irma(X,Y) :- pai(Z,Y), pai(Z,X), X \= Y, fem(X).
+pai("Renan Bernardes Mendes", "Cecília Coavila Bernardes").
+
+mae("Elzade Oliveira Bernardes", "Márcia Bernardes dos Santos").
+mae("Elzade Oliveira Bernardes", "Giovani Oliveira Bernardes").
+mae("Elzade Oliveira Bernardes", "Agmon Oliveira Bernardes").
+mae("Elzade Oliveira Bernardes", "Magda Bernardes Mendes").
+mae("Elzade Oliveira Bernardes", "Gilson de Oliveira Bernardes").
+
+mae("Márcia Bernardes dos Santos", "Michelle Edimarcia dos Santos").
+mae("Márcia Bernardes dos Santos", "Giselly Bernardes dos Santos").
+mae("Márcia Bernardes dos Santos", "Kelly Bernardes dos Santos Souza").
+
+mae("Rosemeire Alves dos Santos", "Mariah Alves Oliveira Bernardes").
+mae("Rosemeire Alves dos Santos", "Bertrand Alves Oliveira Bernardes").
+
+mae("Magda Bernardes Mendes", "Renan Bernardes Mendes").
+mae("Magda Bernardes Mendes", "Milena Bernardes Mendes").
+
+mae("Michelle Edimarcia dos Santos", "Luiz Felipe dos Santos Nogueira").
+
+mae("Giselly Bernardes dos Santos", "Yasmin Eduarda Bernardes de Paula").
+mae("Giselly Bernardes dos Santos", "Marcia Eduarda Santos Luz").
+
+mae("Kelly Bernardes dos Santos Souza", "Sarah Eugênio Bernardes Santos Souza").
+
+mae("Savelli Ciscon Coavila Bernardes", "Cecília Coavila Bernardes").
+
+irmao(X,Y) :- pai(Z,X), pai(Z,Y), X \= Y.
 
 tio(X,Y) :- pai(Z,Y), irmao(X,Z).
 tio(X,Y) :- mae(Z,Y), irmao(X,Z).
 
-tia(X,Y) :- pai(Z,Y), irma(X,Z).
-tia(X,Y) :- mae(Z,Y), irma(X,Z).
+primo(X,Y) :- tio(Z,X), pai(Z,Y).
+primo(X,Y) :- tio(Z,X), mae(Z,Y).
 
-
-prim(X,Y) :- tio(Z,X), pai(Z,Y).
-prim(X,Y) :- tio(Z,X), mae(Z,Y).
-prim(X,Y) :- tia(Z,X), pai(Z,Y).
-prim(X,Y) :- tia(Z,X), mae(Z,Y).
-
-primo(X,Y) :- prim(X,Y), mas(X).
-prima(X,Y) :- prim(X,Y), fem(X).
+neto(X,Y) :- pai(Z,X), pai(Y,Z).
+neto(X,Y) :- mae(Z,X), mae(Y,Z).
+neto(X,Y) :- pai(Z,X), mae(Y,Z).
+neto(X,Y) :- mae(Z,X), pai(Y,Z).

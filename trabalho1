@@ -51,8 +51,8 @@ mae("Savelli", "Cecília").
 
 irmao(X,Y) :- pai(Z,X), pai(Z,Y), X \= Y.
 
-tio(X,Y) :- pai(Z,Y), irmao(X,Z).
-tio(X,Y) :- mae(Z,Y), irmao(X,Z).
+tio(X,Y) :- pai(Z,Y), irmao(X,Z), X \= Z.
+tio(X,Y) :- mae(Z,Y), irmao(X,Z), X \= Z.
 
 primo(X,Y) :- tio(Z,X), pai(Z,Y).
 primo(X,Y) :- tio(Z,X), mae(Z,Y).

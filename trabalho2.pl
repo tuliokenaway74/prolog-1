@@ -7,15 +7,12 @@ criasup(N,DS) :-     N2 is N - 1,
 criainf(N,DI) :-     N3 is 2 * N,
     				 findall(X,between(2,N3,X),DI).
 
-printaPontos(0) :- write('').
-printaPontos(N) :- write(' . '), N1 is N - 1, printaPontos(N1).
-
 printa([],_).
 printa([R|S],N) :- R1 is R - 1,
     			   R2 is N - R,
-    			   printaPontos(R1),
+    			   forall(between(1,R1,L),write(' . ')),
     			   write(' R '), 
-                   printaPontos(R2), 
+                   forall(between(1,R2,L),write(' . ')), 
     			   nl,
     			   printa(S,N).
 

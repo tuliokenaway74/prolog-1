@@ -1,7 +1,3 @@
-%------------------------------------------
-% Busca em largura/profundidade
-% Por Luiz Eduardo
-%------------------------------------------
 ap([],X,X).
 ap([A|B],C,[A|D]) :- ap(B,C,D).
 
@@ -84,8 +80,8 @@ traduz(ic,  '1 canibal atravessa o rio                 ').
 traduz(vmc, '1 missionario e 1 canibal voltam pelo rio ').
 traduz(vmm, '2 missionarios voltam pelo rio            ').
 traduz(vcc, '2 canibais voltam pelo rio                ').
-traduz(vm, '1 missionario voltam pelo rio              ').
-traduz(vc, '1 canibal voltam pelo rio                  ').
+traduz(vm, '1 missionario volta pelo rio              ').
+traduz(vc, '1 canibal volta pelo rio                  ').
 
 
 

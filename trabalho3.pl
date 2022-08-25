@@ -40,7 +40,7 @@ escreve([O-E|R]) :-
     escreve(R), 
     write('Executando: '), 
     traduz(O,T),
-    write(T), write(' obtemos '), desenho(E), nl.
+    write(T), write(' obtemos '), /*desenha(E),*/ write(E), nl.
 
 resolva :-
     inicial(X), 
@@ -53,120 +53,129 @@ resolva :-
 % Especificacao do problema
 %-----------------------------------
 
-desenho([MA,CA,MB,CB,B]) :- 
-    write('    '), 
-    escreve(MA,'M'), 
-    escreve(CA,'C'),
-    escreveRio(B),
-    escreve(MB,'M'), 
-    escreve(CB,'C'),
-    write('    ').
+%-----------------------------------
+% Jarros
+%-----------------------------------
 
-escreve(Q,S) :- 
-    forall(between(1,Q,X),write(S)), 
-    B is 3 - Q,
-    forall(between(1,B,X),write(' ')).
+% traduz(c1, 'encher o jarro 1  ').
+% traduz(c2, 'encher o jarro 2  ').
+% traduz(v1, 'esvaziar o jarro 1').
+% traduz(v2, 'esvaziar o jarro 2').
+% traduz(12, 'despejar 1 em 2   ').
+% traduz(21, 'despejar 2 em 1   ').
 
-escreveRio(B) :- B is 0, write('|-    |').
-escreveRio(B) :- B is 1, write('|    -|').
+% inicial([0,0]).
+% meta([_,2]).
+
+% oper(c1, [X,Y], [3,Y]) :- X < 3.
+% oper(c2, [X,Y], [X,4]) :- Y < 4.
+% oper(v1, [X,Y], [0,Y]) :- X > 0.
+% oper(v2, [X,Y], [X,0]) :- Y > 0.
+% oper(12, [X,Y], [0,Y1]) :- X > 0, Y < 4, Y1 is X + Y, Y1 =< 4.
+% oper(12, [X,Y], [X1,4]) :- X > 0, Y < 4, X1 is X + Y - 4, X + Y > 4.
+% oper(21, [X,Y], [X1,0]) :- Y > 0, X < 3, X1 is X + Y, X1 =< 3.
+% oper(21, [X,Y], [3,Y1]) :- Y > 0, X < 3, Y1 is X + Y - 3, X + Y > 3.
+
+%----------------------------------------------------------------------------------------------------%
+
+%-----------------------------------
+% Fazendeiro
+%-----------------------------------
+
+% traduz(fa, 'fazendeiro vai sozinho   ').
+% traduz(fb, 'fazendeiro volta sozinho ').
+% traduz(la, 'fazendeiro leva o lobo   ').
+% traduz(lb, 'fazendeiro traz o lobo   ').
+% traduz(ca, 'fazendeiro leva a cabra  ').
+% traduz(cb, 'fazendeiro traz a cabra  ').
+% traduz(ra, 'fazendeiro leva o repolho').
+% traduz(rb, 'fazendeiro traz o repolho').
+
+% oper(fa, [a,L,C,R], [b,L,C,R]) :- L \= C, C \= R.
+% oper(fb, [b,L,C,R], [a,L,C,R]) :- L \= C, C \= R.
+% oper(la, [a,a,C,R], [b,b,C,R]) :- (C \= R; C = b).
+% oper(lb, [b,b,C,R], [a,a,C,R]) :- (C \= R; C = a).%
+% oper(ca, [a,L,a,R], [b,L,b,R]).
+% oper(cb, [b,L,b,R], [a,L,a,R]).
+% oper(ra, [a,L,C,a], [b,L,C,b]) :- (L \= C; C = b).
+% oper(rb, [b,L,C,b], [a,L,C,a]) :- (L \= C; C = a).
+
+% % [F,L,C,R], margem em que está cada elemento
+% inicial([a,a,a,a]).
+% meta([b,b,b,b]).
+
+%----------------------------------------------------------------------------------------------------%
+
+%-----------------------------------
+% Especificacao da quarta atividade
+%-----------------------------------
+
+traduz(l1, 'leva 1 missionário e 1 canibal para a margem direita').
+traduz(l2, 'leva 2 missionários para a margem direita           ').
+traduz(l3, 'leva 2 canibais para a margem direita               ').
+traduz(l4, 'leva 1 missionário para a margem direita            ').
+traduz(l5, 'leva 1 canibal para a margem direita                ').
+
+traduz(v1, 'volta 1 missionário e 1 canibal para a margem esquerda').
+traduz(v2, 'volta 2 missionários para a margem esquerda           ').
+traduz(v3, 'volta 2 canibais para a margem esquerda               ').
+traduz(v4, 'volta 1 missionário para a margem esquerda            ').
+traduz(v5, 'volta 1 canibal para a margem esquerda                ').
+
+%----EstadoInicial-----------------------------------------------------------------------------------%
+
+inicial([3,3,0]). % 3 missionarios e 3 canibais na margem esquerda com o bote na margem esquerda %
+
+%--------Meta----------------------------------------------------------------------------------------%
+
+meta([0,0,1]). % 0 missionarios e 0 canibais na margem esquerda com o bote na margem direita
+
+%-----Operações--------------------------------------------------------------------------------------%
+
+teste([M,C]) :- (M is C; M is 3; M is 0).
+
+oper(l1, [M1,C1,0], [M2,C2,1]) :- 
+    M2 is (M1-1), 
+    C2 is (C1-1), 
+    M1 > 0, 
+    C1 > 0, 
+    teste([M2,C2]).
+oper(l2, [M1,C,0], [M2,C,1]) :- 
+    M2 is (M1-2),
+    M1 > 1,
+    teste([M2,C]).
+oper(l2, [M,C1,0], [M,C2,1]) :- 
+    C2 is (C1-2), 
+    C1 > 1,
+    teste([M,C2]).
+oper(l4, [M1,C,0], [M2,C,1]) :- 
+    M2 is (M1-1), 
+    M1 > 0, 
+    teste([M2,C]).
+oper(l5, [M,C1,0], [M,C2,1]) :- 
+    C2 is (C1-1), 
+    C1 > 0,
+    teste([M,C2]).
 
 
-traduz(imc, '1 missionario e 1 canibal atravessam o rio').
-traduz(imm, '2 missionarios atravessam o rio           ').
-traduz(icc, '2 canibais atravessam o rio               ').
-traduz(im,  '1 missionario atravessa o rio             ').
-traduz(ic,  '1 canibal atravessa o rio                 ').
-
-traduz(vmc, '1 missionario e 1 canibal voltam pelo rio ').
-traduz(vmm, '2 missionarios voltam pelo rio            ').
-traduz(vcc, '2 canibais voltam pelo rio                ').
-traduz(vm, '1 missionario volta pelo rio              ').
-traduz(vc, '1 canibal volta pelo rio                  ').
-
-
-
-inicial([3,3,0,0,0]).
-meta([0,0,3,3,1]).
-% 1m1c,2m,2c,1c,1m
-
-verifica([MA,CA,MB,CB,_]) :- (MA >= CA; MA is 0), (MB >= CB; MB is 0).
-
-%operadores de ida, passa os m e c e muda a posicao do barco para outra margem
-oper(imc, [MA,CA,MB,CB,B], [M1,C1,M2,C2,B1]) :-
-    M1 is MA - 1,
-    C1 is CA - 1,
-    M2 is MB + 1,
-    C2 is CB + 1,
-    MA > 0,
-    CA > 0,
-    B is 0,
-	verifica([M1,C1,M2,C2,B]),
-    B1 is 1.
-oper(imm, [MA,CA,MB,CB,B], [M1,CA,M2,CB,B1]) :- 
-    M1 is MA - 2,
-    M2 is MB + 2,
-    MA > 1,
-    B is 0,
-    verifica([M1,CA,M2,CB,B]),
-    B1 is 1.
-oper(icc, [MA,CA,MB,CB,B], [MA,C1,MB,C2,B1]) :- 
-    C1 is CA - 2,
-    C2 is CB + 2,
-    CA > 1,
-    B is 0,
-    verifica([MA,C1,MB,C2,B]),
-    B1 is 1.
-oper(im, [MA,CA,MB,CB,B], [M1,CA,M2,CB,B1]) :- 
-    M1 is MA - 1,
-    M2 is MB + 1,
-    MA > 0,
-    B is 0,
-    verifica([M1,CA,M2,CB,B]),
-    B1 is 1.
-oper(ic, [MA,CA,MB,CB,B], [MA,C1,MB,C2,B1]) :-
-    C1 is CA - 1,
-    C2 is CB + 1,
-    CA > 0,
-    B is 0,
-    verifica([MA,C1,MB,C2,B]),
-    B1 is 1.
-
-%operadores de volta volta os m e c e volta o barco para outra margem
-oper(vmc, [MA,CA,MB,CB,B], [M1,C1,M2,C2,B1]) :-
-    M1 is MA + 1,
-    C1 is CA + 1,
-    M2 is MB - 1,
-    C2 is CB - 1,
-    MB > 0,
-    CB > 0,
-    B is 1,
-	verifica([M1,C1,M2,C2,B]),
-    B1 is 0.
-oper(vmm, [MA,CA,MB,CB,B], [M1,CA,M2,CB,B1]) :- 
-    M1 is MA + 2,
-    M2 is MB - 2,
-    MB > 1,
-    B is 1,
-    verifica([M1,CA,M2,CB,B]),
-    B1 is 0.
-oper(vcc, [MA,CA,MB,CB,B], [MA,C1,MB,C2,B1]) :- 
-    C1 is CA + 2,
-    C2 is CB - 2,
-    CB > 1,
-    B is 1,
-    verifica([MA,C1,MB,C2,B]),
-    B1 is 0.
-oper(vm, [MA,CA,MB,CB,B], [M1,CA,M2,CB,B1] ) :- 
-    M1 is MA + 1,
-    M2 is MB - 1,
-    MB > 0,
-    B is 1,
-    verifica([M1,CA,M2,CB,B]),
-    B1 is 0.
-oper(vc, [MA,CA,MB,CB,B], [MA,C1,MB,C2,B1]) :-
-    C1 is CA + 1,
-    C2 is CB - 1,
-    CB > 0,
-    B is 1,
-    verifica([MA,C1,MB,C2,B]),
-    B1 is 0.
+oper(v1, [M1,C1,1], [M2,C2,0]) :- 
+    M2 is (M1+1), 
+    C2 is (C1+1), 
+    M1 < 3, C1 < 3,
+    teste([M2,C2]).
+oper(v2, [M1,C,1], [M2,C,0]) :- 
+    M2 is (M1+2), 
+    M1 < 2,
+    teste([M2,C]).
+oper(v3, [M,C1,1], [M,C2,0]) :- 
+    C2 is (C1+2), 
+    C1 < 2, 
+    teste([M,C2]).
+oper(v4, [M1,C,1], [M2,C,0]) :- 
+    M2 is (M1+1), 
+    M1 < 3, 
+    teste([M2,C]). 
+oper(v5, [M,C1,1], [M,C2,0]) :-
+    C2 is (C1+1), 
+    C1 < 3, 
+    teste([M,C2]).
